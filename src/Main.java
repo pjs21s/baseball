@@ -1,3 +1,8 @@
+import baseball.BaseballFactory;
+import baseball.BaseballGame;
+import baseball.BaseballHistory;
+import input.InputHelper;
+
 import java.util.Scanner;
 
 public class Main {
@@ -7,11 +12,9 @@ public class Main {
         boolean isRunning = true;
 
         while(isRunning) {
-            BaseballGame baseballGame = new BaseballGame();
-            System.out.println("1. 게임 시작하기 2. 게임 기록 보기 3. 종료하기");
+            System.out.println("0. 자리수 설정 1. 게임 시작하기  2. 게임 기록 보기  3. 종료하기");
 
-            Scanner sc = new Scanner(System.in);
-            String userInput = sc.nextLine();
+            String userInput = InputHelper.input("입력 : ");
 
             if (!isNumeric(userInput)) {
                 System.out.println("올바른 숫자를 입력해주세요.");
@@ -19,7 +22,20 @@ public class Main {
             }
 
             switch(Integer.parseInt(userInput)) {
+                case 0 -> {
+                    int size = Integer.parseInt(InputHelper.input("난이도 설정 : "));
+
+                    if (size < 3 || size > 5) {
+                        System.out.println("3 ~ 5 자리만 입력 가능합니다.");
+                        continue;
+                    }
+
+                    BaseballGame baseballGame = BaseballFactory.generateWithSize(size);
+                    baseballGame.play();
+                    baseballHistory.record(baseballGame);
+                }
                 case 1 -> {
+                    BaseballGame baseballGame = BaseballFactory.generate();
                     baseballGame.play();
                     baseballHistory.record(baseballGame);
                 }
@@ -28,6 +44,7 @@ public class Main {
                     System.out.println("< 숫자 야구 게임을 종료합니다 >");
                     isRunning = false;
                 }
+                default -> System.out.println("올바른 숫자를 입력해주세요.");
             }
         }
     }
@@ -36,7 +53,6 @@ public class Main {
         if (input == null || input.isEmpty()) {
             return false;
         }
-
         for (char c : input.toCharArray()) {
             if (!Character.isDigit(c)) {
                 return false;

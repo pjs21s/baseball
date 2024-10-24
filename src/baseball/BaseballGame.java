@@ -1,24 +1,28 @@
+package baseball;
+
+import input.InputHelper;
+
 import java.util.*;
 
 public class BaseballGame {
-    private int size = 3;
+    private int size;
     private String inputValue;
     private String answer;
     private List<Character> availableChars = List.of('1', '2', '3', '4', '5', '6', '7', '8', '9');
 
     private int tryCount = 0;
 
-    public BaseballGame() {
+    public BaseballGame(int size) {
+        this.size = size;
         this.answer = generateRandomWithShuffle();
+        System.out.println(this.answer);
     }
 
     public void play() {
         System.out.println("< 게임을 시작합니다 >");
 
         while(true) {
-            System.out.println("숫자를 입력하세요");
-            Scanner sc = new Scanner(System.in);
-            this.inputValue = sc.nextLine();
+            this.inputValue = InputHelper.input("숫자를 입력하세요: ");
 
             if (!isValidInput(this.inputValue)) {
                 System.out.println("올바르지 않은 입력값입니다. 다시 입력하세요.");
