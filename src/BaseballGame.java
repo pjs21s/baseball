@@ -6,6 +6,8 @@ public class BaseballGame {
     private String answer;
     private List<Character> availableChars = List.of('1', '2', '3', '4', '5', '6', '7', '8', '9');
 
+    private int tryCount = 0;
+
     public BaseballGame() {
         this.answer = generateRandomWithShuffle();
     }
@@ -22,6 +24,8 @@ public class BaseballGame {
                 System.out.println("올바르지 않은 입력값입니다. 다시 입력하세요.");
                 continue;
             }
+
+            this.tryCount++;
 
             int strikeCount = countStrike(inputValue, answer);
 
@@ -40,8 +44,16 @@ public class BaseballGame {
         }
     }
 
+    public String getResult() {
+        return "이 게임 시도 횟수 : " + this.tryCount;
+    }
+
     private boolean isValidInput(String input) {
         Set<Character> usedChars = new HashSet<>();
+
+        if (input == null || input.isEmpty()) {
+            return false;
+        }
 
         for (char c : input.toCharArray()) {
             if (!availableChars.contains(c)) {
