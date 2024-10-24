@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class BaseballGame {
     private int size = 3;
@@ -17,8 +14,14 @@ public class BaseballGame {
         System.out.println("< 게임을 시작합니다 >");
 
         while(true) {
+            System.out.println("숫자를 입력하세요");
             Scanner sc = new Scanner(System.in);
             this.inputValue = sc.nextLine();
+
+            if (!isValidInput(this.inputValue)) {
+                System.out.println("올바르지 않은 입력값입니다. 다시 입력하세요.");
+                continue;
+            }
 
             int strikeCount = countStrike(inputValue, answer);
 
@@ -35,6 +38,20 @@ public class BaseballGame {
                 System.out.println("스트라이크: " + strikeCount + " / " + "볼 : " + ballCount);
             }
         }
+    }
+
+    private boolean isValidInput(String input) {
+        Set<Character> usedChars = new HashSet<>();
+
+        for (char c : input.toCharArray()) {
+            if (!availableChars.contains(c)) {
+                return false;
+            }
+            if (!usedChars.add(c)) {
+                return false;
+            }
+        }
+        return input.length() == this.size;
     }
 
     private String generateRandomWithShuffle() {
